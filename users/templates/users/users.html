@@ -15,8 +15,8 @@
     {% for user in users %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
-      <td>{{ user }}</td>
-      <td>{{ user.project }}</td>
+      <td>{{ user }}</td>      
+      <td>{{ user.project.all }}</td>      
     </tr>
     {% endfor %}
   </tbody>

@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from .models import Project
+from users.models import UserProfile
 from .forms import ProjectCreateForm
 
 
 # Create your views here.
 def projects(request):
-    projects_list = Project.objects.all()
+    projects_list = Project.objects.all()    
     context = {
         'projects': projects_list,
     }
