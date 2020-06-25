@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login to Dashboard</title>
+</head>
+<body>
+    <form method="post" action="">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <h1>Login</h1>
+            <p class="text-muted">Sign In to your account</p>
+
+                <input type="text" name="username" class="form-control">
+
+                <input type="password" name="password" class="form-control">
+            <div class="row">
+                <div class="col-6">
+                    <button type="submit" class="btn btn-primary px-4">Login</button>
+                </div>
+                <div class="col-6 text-right">
+                    <button type="button" class="btn btn-link px-0">Forgot password?</button>
+                </div>
+                {% if login_form.errors %}
+                <div class="alert alert-danger col-12 mt-3" role="alert">
+                    Wrong username or password
+                </div>
+                {% endif %}
+            </div>
+        </form>
+    </form>
+</body>
+</html>
