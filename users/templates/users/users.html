@@ -11,12 +11,23 @@
       <th scope="col">Assigned Projects</th>
     </tr>
   </thead>
-  <tbody>
+  <!-- <tbody>
     {% for user in users %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
-      <td>{{ user }}</td>      
-      <td>{{ user.project.all }}</td>      
+      <td>{{ user|upper }}</td> 
+      {% for x in user.project.all %}     
+      <td>{{x.project_name}}</td>
+      {% endfor %}      
+    </tr>
+    {% endfor %}
+  </tbody> -->
+  <tbody>
+    {% for project in projects %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ project.assign|upper }}</td>         
+      <td>{{project.project_name}}</td>      
     </tr>
     {% endfor %}
   </tbody>
