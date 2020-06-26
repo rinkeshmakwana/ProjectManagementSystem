@@ -3,6 +3,7 @@ from .models import Project
 from django.views.generic import ListView
 from .forms import ProjectCreateForm
 
+
 class ProjectListView(ListView):
     model = Project
     template_name = 'projects/projects.html'
