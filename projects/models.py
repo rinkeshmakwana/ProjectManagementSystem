@@ -15,7 +15,7 @@ class Project(models.Model):
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
     status = models.CharField(max_length=4, choices=status, default=1)
-    assign = models.ForeignKey(User, on_delete=models.CASCADE)
+    assign = models.ManyToManyField(User)
 
     class Meta:
         ordering = ['project_name']

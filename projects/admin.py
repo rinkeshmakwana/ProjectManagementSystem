@@ -3,7 +3,7 @@ from .models import Project
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'start_date', 'end_date', 'status', 'assign']
+    list_display = ['__str__', 'start_date', 'end_date', 'status']
     class Meta:
         model = Project
 

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Project
-from django.views.generic import ListView
+from users.models import UserProfile
+from django.views.generic import ListView, UpdateView
 from .forms import ProjectCreateForm
 
 
@@ -27,6 +28,7 @@ class ProjectListView(ListView):
 
 
 def new_project(request):
+    users = UserProfile.objects.all()
     if request.method == 'POST':
         form = ProjectCreateForm(request.POST)
         context = {
@@ -34,6 +36,8 @@ def new_project(request):
         }
         if form.is_valid():
             form.save()
+            created = True
+            context = {'created': created}
             form = ProjectCreateForm()
             return render(request, 'projects/new_project.html', context)
         else:
@@ -44,3 +48,9 @@ def new_project(request):
             'form': form,
         }
         return render(request, 'projects/new_project.html', context)
+
+class ProjectUpdateView(UpdateView):
+    model = Project
+    fields = ['project_name', 'description', 'end_date', 'status', 'assign']
+    template_name = 'projects/new_project.html'
+    success_url = '/'

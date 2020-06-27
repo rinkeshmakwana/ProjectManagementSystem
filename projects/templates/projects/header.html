@@ -6,23 +6,25 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'projects-list' %}">Projects <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'projects-list' %}">Projects</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'users' %}">Users</a>
       </li>
+      {% if request.user.is_superuser %}
       <li class="nav-item">
         <a class="nav-link" href="{% url 'new-project' %}">New Project</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'new-user' %}">New Employee</a>
       </li>
+      {% endif %}
     </ul>
     <ul class="navbar-nav mr-5">
     {% if user.is_authenticated %}
     <li class="nav-item">
-      <a class="nav-link">{{ user.username }}</a>
+      <a class="nav-link">{{ user.username|upper }}</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{% url 'logout' %}" >Logout</a>

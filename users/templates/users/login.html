@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login to Dashboard</title>
-</head>
-<body>
+{% extends 'projects/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block content %}
     <form method="post" action="">
         <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
@@ -29,5 +28,4 @@
             </div>
         </form>
     </form>
-</body>
-</html>
+{% endblock %}

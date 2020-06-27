@@ -27,7 +27,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             created = True
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            # login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             context = {'created': created}
             return render(request, 'users/register_form.html', context)
         else:

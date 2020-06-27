@@ -1,4 +1,4 @@
-{% extends 'users/base.html' %}
+{% extends 'projects/base.html' %}
 
 {% block content %}
   <div class="container">
@@ -8,26 +8,23 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Employee</th>
+      <th scope="col">Designation</th>
       <th scope="col">Assigned Projects</th>
     </tr>
   </thead>
-  <!-- <tbody>
-    {% for user in users %}
-    <tr>
-      <th scope="row">{{ forloop.counter }}</th>
-      <td>{{ user|upper }}</td> 
-      {% for x in user.project.all %}     
-      <td>{{x.project_name}}</td>
-      {% endfor %}      
-    </tr>
-    {% endfor %}
-  </tbody> -->
   <tbody>
-    {% for project in projects %}
+    {% for employee in users %}
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
-      <td>{{ project.assign|upper }}</td>         
-      <td>{{project.project_name}}</td>      
+      <td>{{ employee.user|upper }}</td>
+      {% if employee.emp_type == '1' %}
+      <td>Developer</td>
+      {% elif employee.emp_type == '2' %}
+      <td>Team Lead</td>
+      {% else %}
+      <td>Project Manager</td>
+      {% endif %}
+      <td>{{ employee.project.all|join:', ' }}</td>      
     </tr>
     {% endfor %}
   </tbody>
