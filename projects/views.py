@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from .models import Project
 from users.models import UserProfile
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
 from .forms import ProjectCreateForm
+from django.urls import reverse_lazy
 
 
 class ProjectListView(ListView):
     model = Project
     template_name = 'projects/projects.html'
-    # context_object_name = 'projects'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -18,39 +18,32 @@ class ProjectListView(ListView):
         context['projects_cancelled'] = Project.objects.filter(status='4').order_by('-end_date')
         return context
 
-# Create your views here.
-# def projects(request):
-#     projects_list = Project.objects.all()    
-#     context = {
-#         'projects': projects_list,
-#     }
-#     return render(request, 'projects/projects.html', context)
+
+class ProjectDetailView(DetailView):
+    model = Project
+    context_object_name = 'project'
 
 
-def new_project(request):
-    users = UserProfile.objects.all()
-    if request.method == 'POST':
-        form = ProjectCreateForm(request.POST)
-        context = {
-            'form': form,
-        }
-        if form.is_valid():
-            form.save()
-            created = True
-            context = {'created': created}
-            form = ProjectCreateForm()
-            return render(request, 'projects/new_project.html', context)
-        else:
-            return render(request, 'projects/new_project.html', context)
-    else:
-        form = ProjectCreateForm()
-        context = {
-            'form': form,
-        }
-        return render(request, 'projects/new_project.html', context)
+class ProjectCreateView(CreateView):
+    model = Project
+    form_class = ProjectCreateForm
+    success_url = reverse_lazy('projects-list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Create'
+        return context
 
 class ProjectUpdateView(UpdateView):
     model = Project
-    fields = ['project_name', 'description', 'end_date', 'status', 'assign']
-    template_name = 'projects/new_project.html'
-    success_url = '/'
+    fields = '__all__'
+    success_url = reverse_lazy('projects-list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Update'
+        return context
+
+class ProjectDeleteView(DeleteView):
+    model = Project
+    success_url = reverse_lazy('projects-list')

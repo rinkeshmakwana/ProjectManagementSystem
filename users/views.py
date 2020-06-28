@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from .models import UserProfile
 from projects.models import Project
+from django.views.generic import CreateView
 from .forms import UserRegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.urls import reverse_lazy
 
 
-# Create your views here.
 def usersView(request):
     users = UserProfile.objects.all()
     projects = Project.objects.all()
@@ -20,22 +22,11 @@ def usersView(request):
     return render(request, 'users/users.html', context)
 
 
-def register(request):
-    if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        context = {'form': form}
-        if form.is_valid():
-            user = form.save()
-            created = True
-            # login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            context = {'created': created}
-            return render(request, 'users/register_form.html', context)
-        else:
-            return render(request, 'users/register_form.html', context)
-    else:
-        form = UserRegistrationForm()
-        context = {'form': form}
-        return render(request, 'users/register_form.html', context)
+class RegistrationView(CreateView):
+    model = UserProfile
+    form_class = UserRegistrationForm
+    template_name = 'users/register_form.html'
+    success_url = reverse_lazy('new-user')
 
 
 def login_view(request):
