@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from projects.models import Project
 from django.views.generic import CreateView
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, UserProfileRegisterForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.urls import reverse_lazy
@@ -23,10 +24,34 @@ def usersView(request):
 
 
 class RegistrationView(CreateView):
-    model = UserProfile
-    form_class = UserRegistrationForm
-    template_name = 'users/register_form.html'
-    success_url = reverse_lazy('new-user')
+    model = User
+
+    def get(self, request, *args, **kwargs):
+        p_form = UserProfileRegisterForm()
+        u_form = UserRegistrationForm()
+
+        context = {
+            'p_form': p_form,
+            'u_form': u_form
+        }
+        return render(request, 'users/register_form.html', context)
+
+    def post(self, request, *args, **kwargs):
+        p_form = UserProfileRegisterForm(request.POST)
+        u_form = UserRegistrationForm(request.POST)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Account has been created.')
+            return redirect('users')
+        else:
+            u_form = UserRegistrationForm()
+            p_form = UserProfileRegisterForm()
+        context = {
+            'u_form': u_form,
+            'p_form': p_form
+        }
+        return render(request, 'users/register_form.html', context)
 
 
 def login_view(request):

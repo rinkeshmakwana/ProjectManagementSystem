@@ -25,17 +25,20 @@ class UserRegistrationForm(UserCreationForm):
 
         return user
 
-    def __init__(self, *args, **kwargs):
-        super(UserRegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['class'] = 'form-control'
-        self.fields['username'].widget.attrs['placeholder'] = 'Username'
-        self.fields['first_name'].widget.attrs['class'] = 'form-control'
-        self.fields['first_name'].widget.attrs['placeholder'] = 'First name'
-        self.fields['last_name'].widget.attrs['class'] = 'form-control'
-        self.fields['last_name'].widget.attrs['placeholder'] = 'Last name'
-        self.fields['email'].widget.attrs['class'] = 'form-control'
-        self.fields['email'].widget.attrs['placeholder'] = 'E-mail'
-        self.fields['password1'].widget.attrs['class'] = 'form-control'
-        self.fields['password1'].widget.attrs['placeholder'] = 'Password'
-        self.fields['password2'].widget.attrs['class'] = 'form-control'
-        self.fields['password2'].widget.attrs['placeholder'] = 'Retype Password'
+
+class UserProfileRegisterForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['emp_type']
+
+    def save(self, commit=True):
+        userprofile = super(UserProfileRegisterForm, self).save(commit=False)
+        userprofile.emp_type = self.cleaned_data['emp_type']
+
+        if commit:
+            user = User.objects.latest('pk')
+            user_profile = UserProfile.objects.get(user=user)
+            user_profile.emp_type = userprofile.emp_type
+            user_profile.save()
+
+        return userprofile

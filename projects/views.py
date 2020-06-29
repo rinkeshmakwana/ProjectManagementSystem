@@ -1,6 +1,4 @@
-from django.shortcuts import render
 from .models import Project
-from users.models import UserProfile
 from django.views.generic import ListView, UpdateView, DetailView, DeleteView, CreateView
 from .forms import ProjectCreateForm
 from django.urls import reverse_lazy
@@ -34,6 +32,7 @@ class ProjectCreateView(CreateView):
         context['title'] = 'Create'
         return context
 
+
 class ProjectUpdateView(UpdateView):
     model = Project
     fields = '__all__'
@@ -43,6 +42,7 @@ class ProjectUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Update'
         return context
+
 
 class ProjectDeleteView(DeleteView):
     model = Project
